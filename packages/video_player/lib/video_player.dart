@@ -184,6 +184,9 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// is constructed with.
   final DataSourceType dataSourceType;
 
+  static int maxCacheSize = 100 * 1024 * 1024;
+  static int maxCacheFileSize = 10 * 1024 * 1024;
+
   final String package;
   Timer _timer;
   bool _isDisposed = false;
@@ -215,6 +218,10 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           'formatHint': _videoFormatStringMap[formatHint]
         };
     }
+    dataSourceDescription.addAll(<String, dynamic>{
+      'maxCacheSize': maxCacheSize,
+      'maxFileSize': maxCacheFileSize,
+    });
     final Map<String, dynamic> response =
         await _channel.invokeMapMethod<String, dynamic>(
       'create',
